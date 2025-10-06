@@ -1,0 +1,10 @@
+#!/bin/bash
+echo "🔑 Generating new secrets for production..."
+echo ""
+echo "Add these to your .env.production file:"
+echo ""
+echo "JWT_SECRET=$(openssl rand -base64 32)"
+echo "API_TOKEN_SALT=$(openssl rand -base64 32)"
+echo "ADMIN_JWT_SECRET=$(openssl rand -base64 32)"
+echo "APP_KEYS=$(openssl rand -base64 32),$(openssl rand -base64 32),$(openssl rand -base64 32),$(openssl rand -base64 32)"
+echo ""

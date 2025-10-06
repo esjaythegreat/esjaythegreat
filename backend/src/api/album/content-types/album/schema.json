@@ -1,0 +1,74 @@
+{
+  "kind": "collectionType",
+  "collectionName": "albums",
+  "info": {
+    "singularName": "album",
+    "pluralName": "albums",
+    "displayName": "album"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "releaseDate": {
+      "type": "date"
+    },
+    "coverImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "audioFiles": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "lyrics": {
+      "type": "richtext"
+    },
+    "description": {
+      "type": "text"
+    },
+    "youtubeUrl": {
+      "type": "string"
+    },
+    "spotifyUrl": {
+      "type": "string"
+    },
+    "appleMusicUrl": {
+      "type": "string"
+    },
+    "melonUrl": {
+      "type": "string"
+    },
+    "genieUrl": {
+      "type": "string"
+    },
+    "bugsUrl": {
+      "type": "string"
+    }
+  }
+}

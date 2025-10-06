@@ -1,0 +1,49 @@
+# Environment variables (NEVER commit!)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build
+.next/
+out/
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Strapi
+backend/.cache/
+backend/.tmp/
+backend/public/uploads/
+backend/build/
+backend/.env
+backend/.env.*
+
+# Frontend
+frontend/.next/
+frontend/out/
+frontend/.env
+frontend/.env.*
+
+# Backups
+backups/
+
+# Docker
+docker-compose.override.yml

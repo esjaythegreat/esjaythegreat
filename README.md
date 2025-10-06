@@ -481,7 +481,7 @@ You need to create these content types in Strapi admin panel:
 - slug (UID)
 - description (Text, Long)
 - releaseDate (Date)
-- lyrics (Text, Long)
+- lyrics (Rich text)
 - coverImage (Media, Single)
 - melonUrl (Text)
 - genieUrl (Text)
@@ -493,20 +493,18 @@ You need to create these content types in Strapi admin panel:
 - title (Text)
 - slug (UID)
 - excerpt (Text)
-- content (Text, Long)
+- content (Rich text)
 - publishedDate (DateTime)
 - featuredImage (Media, Single)
 - youtubeEmbedUrl (Text)
 
 ### Events
 - title (Text)
-- slug (UID)
-- description (Text, Long)
-- eventDate (DateTime)
-- eventTime (Text)
+- date (DateTime)
 - venue (Text)
+- city (Text)
 - ticketUrl (Text)
-- posterImage (Media, Single)
+- description (Rich text)
 
 ### Newsletter Subscribers
 - email (Email, Unique)
@@ -518,7 +516,7 @@ You need to create these content types in Strapi admin panel:
 - name (Text)
 - email (Email)
 - subject (Text)
-- message (Text, Long)
+- message (Rich text)
 - receivedAt (DateTime)
 - isRead (Boolean)
 

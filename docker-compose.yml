@@ -29,7 +29,7 @@ services:
     volumes:
       - ./backend/src:/opt/app/src
       - ./backend/config:/opt/app/config
-      - ./backend/public:/opt/app/public
+      - strapi-uploads:/opt/app/public/uploads
     environment:
       APP_ENV: ${APP_ENV:-local}
       NODE_ENV: ${NODE_ENV:-development}
@@ -51,7 +51,7 @@ services:
       sh -c "if [ \"$APP_ENV\" = \"local\" ]; then
         npm run develop;
       else
-        npm run start;
+        npm run build && npm run start;
       fi"
     networks:
       - esjaythegreat-network
@@ -92,6 +92,9 @@ services:
 
 volumes:
   postgres-data:
+    name: esjaythegreat_postgres-data
+  strapi-uploads:
+    name: esjaythegreat_strapi-uploads
 
 networks:
   esjaythegreat-network:

@@ -1,4 +1,4 @@
-.PHONY: help build up down restart logs logs-strapi logs-frontend logs-postgres clean clean-all status ps
+.PHONY: help build up down restart logs logs-strapi logs-frontend logs-postgres clean clean-cache clean-all status ps backup restore
 
 # Default target
 help:
@@ -12,12 +12,15 @@ help:
 	@echo "  make logs-frontend  - View Frontend logs"
 	@echo "  make logs-postgres  - View Postgres logs"
 	@echo "  make clean          - Stop and remove containers (keeps volumes)"
+	@echo "  make clean-cache    - Remove node_modules and build artifacts"
 	@echo "  make clean-all      - Stop and remove everything including volumes"
 	@echo "  make status         - Show service status"
 	@echo "  make ps             - List running containers"
 	@echo "  make shell-strapi   - Open shell in Strapi container"
 	@echo "  make shell-frontend - Open shell in Frontend container"
 	@echo "  make shell-postgres - Open shell in Postgres container"
+	@echo "  make backup         - Backup database and uploaded files"
+	@echo "  make restore        - Restore from latest backup"
 
 # Build all containers
 build:
@@ -75,7 +78,7 @@ clean-all:
 	@echo "WARNING: This will delete all data including the database!"
 	@read -p "Are you sure? [y/N] " -n 1 -r; \
 	echo; \
-	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+	if [[ $REPLY =~ ^[Yy]$ ]]; then \
 		docker-compose down -v; \
 		echo "All containers and volumes removed."; \
 	else \
@@ -104,4 +107,38 @@ shell-postgres:
 
 # View database
 db-console:
-	docker-compose exec postgres psql -U $${POSTGRES_USER:-strapi} -d $${POSTGRES_DB:-strapi}
+	docker-compose exec postgres psql -U ${POSTGRES_USER:-strapi} -d ${POSTGRES_DB:-strapi}
+
+# Backup database and uploaded files
+backup:
+	@echo "Creating backup..."
+	@mkdir -p backups
+	@TIMESTAMP=$(date +%Y%m%d_%H%M%S); \
+	echo "Backing up database..."; \
+	docker-compose exec -T postgres pg_dump -U ${POSTGRES_USER:-strapi} ${POSTGRES_DB:-strapi} > backups/db_$TIMESTAMP.sql; \
+	echo "Backing up uploaded files..."; \
+	docker-compose exec -T strapi tar czf - /opt/app/public/uploads 2>/dev/null > backups/uploads_$TIMESTAMP.tar.gz || true; \
+	echo "Backup complete:"; \
+	echo "  - backups/db_$TIMESTAMP.sql"; \
+	echo "  - backups/uploads_$TIMESTAMP.tar.gz"
+
+# Restore from latest backup
+restore:
+	@echo "Available backups:"
+	@ls -lht backups/ | head -10
+	@echo ""
+	@read -p "Enter backup timestamp (YYYYMMDD_HHMMSS): " TIMESTAMP; \
+	if [ -f "backups/db_$TIMESTAMP.sql" ]; then \
+		echo "Restoring database..."; \
+		docker-compose exec -T postgres psql -U ${POSTGRES_USER:-strapi} ${POSTGRES_DB:-strapi} < backups/db_$TIMESTAMP.sql; \
+		echo "Database restored."; \
+	else \
+		echo "Database backup not found: backups/db_$TIMESTAMP.sql"; \
+	fi; \
+	if [ -f "backups/uploads_$TIMESTAMP.tar.gz" ]; then \
+		echo "Restoring uploaded files..."; \
+		docker-compose exec -T strapi tar xzf - -C / < backups/uploads_$TIMESTAMP.tar.gz; \
+		echo "Files restored."; \
+	else \
+		echo "Uploads backup not found: backups/uploads_$TIMESTAMP.tar.gz"; \
+	fi

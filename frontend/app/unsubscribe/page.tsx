@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
+const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://strapi:1337/api';
+const BROWSER_URL = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
+
 export default function UnsubscribePage() {
   const searchParams = useSearchParams();
   const [step, setStep] = useState<'confirm' | 'processing' | 'success' | 'error' | 'notfound'>('confirm');
@@ -19,7 +22,7 @@ export default function UnsubscribePage() {
     const fetchSubscriber = async () => {
       try {
         const res = await fetch(
-          `http://localhost:1337/api/newsletter-subscribers?filters[unsubscribeToken][$eq]=${token}`
+          `${BROWSER_URL}/api/newsletter-subscribers?filters[unsubscribeToken][$eq]=${token}`
         );
         const data = await res.json();
         
@@ -30,6 +33,7 @@ export default function UnsubscribePage() {
 
         setSubscriber(data.data[0]);
       } catch (error) {
+        console.error('Error fetching subscriber:', error);
         setStep('error');
       }
     };
@@ -42,7 +46,7 @@ export default function UnsubscribePage() {
 
     try {
       const res = await fetch(
-        `http://localhost:1337/api/newsletter-subscribers/${subscriber.id}`,
+        `${BROWSER_URL}/api/newsletter-subscribers/${subscriber.id}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -58,6 +62,7 @@ export default function UnsubscribePage() {
         setStep('error');
       }
     } catch (error) {
+      console.error('Error unsubscribing:', error);
       setStep('error');
     }
   };
@@ -67,7 +72,7 @@ export default function UnsubscribePage() {
 
     try {
       const res = await fetch(
-        `http://localhost:1337/api/newsletter-subscribers/${subscriber.id}`,
+        `${BROWSER_URL}/api/newsletter-subscribers/${subscriber.id}`,
         {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -84,6 +89,7 @@ export default function UnsubscribePage() {
         setStep('error');
       }
     } catch (error) {
+      console.error('Error resubscribing:', error);
       setStep('error');
     }
   };
@@ -110,7 +116,7 @@ export default function UnsubscribePage() {
                   >
                     구독 취소
                   </button>
-                  
+                  <a
                     href="/"
                     className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block"
                   >
@@ -133,7 +139,7 @@ export default function UnsubscribePage() {
                   >
                     다시 구독하기
                   </button>
-                  
+                  <a
                     href="/"
                     className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block"
                   >

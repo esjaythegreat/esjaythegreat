@@ -18,12 +18,12 @@ export function formatKoreanDateTime(utcString: string): string {
 }
 
 /**
- * Get Strapi media URL
- * Uses browser URL for client-side, server URL for server-side
+ * Get Strapi media URL for browser usage
+ * Uses NEXT_PUBLIC_STRAPI_BROWSER_URL environment variable
  */
 export function getStrapiMediaUrl(path?: string): string {
   if (!path) return '';
-
+  
   const browserUrl = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
   return `${browserUrl}${path}`;
 }

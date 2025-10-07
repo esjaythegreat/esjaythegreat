@@ -3,8 +3,7 @@ const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://strapi:1337/ap
 export async function getAlbums() {
   try {
     const res = await fetch(`${API_URL}/albums?sort=releaseDate:desc&populate=*`, {
-      cache: 'no-store',
-      next: { revalidate: 60 }
+      next: { revalidate: 60 } // Revalidate every 60 seconds
     });
     
     if (!res.ok) {
@@ -23,12 +22,12 @@ export async function getAlbum(slug: string) {
   try {
     const res = await fetch(
       `${API_URL}/albums?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`,
-      { cache: 'no-store' }
+      { next: { revalidate: 60 } }
     );
     
     if (!res.ok) {
       const idRes = await fetch(`${API_URL}/albums/${slug}?populate=*`, {
-        cache: 'no-store'
+        next: { revalidate: 60 }
       });
       if (!idRes.ok) return null;
       const idData = await idRes.json();
@@ -46,7 +45,6 @@ export async function getAlbum(slug: string) {
 export async function getArticles() {
   try {
     const res = await fetch(`${API_URL}/articles?sort=publishedDate:desc&populate=*`, {
-      cache: 'no-store',
       next: { revalidate: 60 }
     });
     
@@ -66,12 +64,12 @@ export async function getArticle(slug: string) {
   try {
     const res = await fetch(
       `${API_URL}/articles?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`,
-      { cache: 'no-store' }
+      { next: { revalidate: 60 } }
     );
     
     if (!res.ok) {
       const idRes = await fetch(`${API_URL}/articles/${slug}?populate=*`, {
-        cache: 'no-store'
+        next: { revalidate: 60 }
       });
       if (!idRes.ok) return null;
       const idData = await idRes.json();
@@ -89,7 +87,6 @@ export async function getArticle(slug: string) {
 export async function getEvents() {
   try {
     const res = await fetch(`${API_URL}/events?sort=date:desc&populate=*`, {
-      cache: 'no-store',
       next: { revalidate: 60 }
     });
     

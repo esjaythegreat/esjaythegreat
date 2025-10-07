@@ -47,7 +47,7 @@ export default async function Home() {
             대한민국 서울의 싱어송라이터
           </p>
           {/* lowercase intentional */}
-          <p className="text-lg text-gray-400 mb-12">
+          <p className="text-lg text-gray-500 mb-12">
             a singer-songwriter based in seoul
           </p>
           <div className="w-24 h-px bg-gray-700 mx-auto mb-12"></div>
@@ -101,7 +101,7 @@ export default async function Home() {
                       <h3 className="text-lg font-light tracking-wide mb-1" itemProp="name">
                         {album.title || 'Untitled'}
                       </h3>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-gray-500">
                         <time itemProp="datePublished">
                           {album.releaseDate ? new Date(album.releaseDate).getFullYear() : currentYear}
                         </time>

@@ -51,7 +51,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
       <div>
-        <label htmlFor="name" className="block text-sm text-gray-400 mb-2">
+        <label htmlFor="name" className="block text-sm text-gray-500 mb-2">
           이름 *
         </label>
         <input
@@ -66,7 +66,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm text-gray-400 mb-2">
+        <label htmlFor="email" className="block text-sm text-gray-500 mb-2">
           이메일 *
         </label>
         <input
@@ -81,7 +81,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="subject" className="block text-sm text-gray-400 mb-2">
+        <label htmlFor="subject" className="block text-sm text-gray-500 mb-2">
           제목
         </label>
         <input
@@ -95,7 +95,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm text-gray-400 mb-2">
+        <label htmlFor="message" className="block text-sm text-gray-500 mb-2">
           메시지 *
         </label>
         <textarea

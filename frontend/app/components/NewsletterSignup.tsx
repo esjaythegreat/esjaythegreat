@@ -56,7 +56,7 @@ export default function NewsletterSignup() {
       <h3 className="text-2xl font-light tracking-wider mb-4">
         새로운 소식 받기
       </h3>
-      <p className="text-gray-400 font-light mb-6">
+      <p className="text-gray-500 font-light mb-6">
         새 곡 발매 소식을 가장 먼저 받아보세요
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">

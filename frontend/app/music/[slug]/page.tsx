@@ -76,7 +76,7 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
                   <h1 className="text-5xl font-light tracking-wider mb-4" itemProp="name">
                     {album.title}
                   </h1>
-                  <p className="text-xl text-gray-400 mb-8">
+                  <p className="text-xl text-gray-500 mb-8">
                     <time itemProp="datePublished" dateTime={album.releaseDate}>
                       {album.releaseDate ? new Date(album.releaseDate).getFullYear() : '2024'}
                     </time>

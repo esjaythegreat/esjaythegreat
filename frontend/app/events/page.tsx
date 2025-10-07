@@ -29,7 +29,7 @@ export default async function EventsPage() {
         <div className="max-w-4xl mx-auto">
           {/* lowercase intentional */}
           <h1 className="text-5xl font-light tracking-wider mb-4 text-center">events</h1>
-          <p className="text-center text-gray-400 mb-16">공연 및 이벤트</p>
+          <p className="text-center text-gray-500 mb-16">공연 및 이벤트</p>
 
           {upcomingEvents.length > 0 && (
             <section className="mb-16">
@@ -46,7 +46,7 @@ export default async function EventsPage() {
                           {event.title}
                         </h3>
                         
-                        <div className="text-gray-400 space-y-1 mb-4">
+                        <div className="text-gray-500 space-y-1 mb-4">
                           <p className="flex items-center gap-2">
                             <span>📅</span>
                             <span>{formatKoreanDateTime(event.date)}</span>
@@ -60,7 +60,7 @@ export default async function EventsPage() {
                         </div>
 
                         {event.description && (
-                          <div className="text-gray-300 leading-relaxed mb-4 prose prose-invert max-w-none"
+                          <div className="text-gray-500 leading-relaxed mb-4 prose prose-invert max-w-none"
                                dangerouslySetInnerHTML={{ __html: event.description }} />
                         )}
 

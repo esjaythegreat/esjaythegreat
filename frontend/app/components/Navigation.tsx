@@ -19,7 +19,7 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
         {/* lowercase intentional */}
         <Link 
           href="/" 
-          className="text-xl font-light tracking-widest hover:text-gray-400 transition"
+          className="text-xl font-light tracking-widest hover:text-gray-500 transition"
           onClick={closeMenu}
         >
           esjaythegreat
@@ -30,32 +30,32 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
           {currentPage === 'home' ? (
             <>
               {/* lowercase intentional */}
-              <a href="#home" className="hover:text-gray-400 transition">home</a>
-              <a href="#music" className="hover:text-gray-400 transition">music</a>
-              <Link href="/blog" className="hover:text-gray-400 transition">blog</Link>
-              <Link href="/events" className="hover:text-gray-400 transition">events</Link>
-              <Link href="/contact" className="hover:text-gray-400 transition">contact</Link>
+              <a href="#home" className="hover:text-gray-500 transition">home</a>
+              <a href="#music" className="hover:text-gray-500 transition">music</a>
+              <Link href="/blog" className="hover:text-gray-500 transition">blog</Link>
+              <Link href="/events" className="hover:text-gray-500 transition">events</Link>
+              <Link href="/contact" className="hover:text-gray-500 transition">contact</Link>
             </>
           ) : (
             <>
               {/* lowercase intentional */}
-              <Link href="/" className="hover:text-gray-400 transition">home</Link>
-              <Link href="/#music" className="hover:text-gray-400 transition">music</Link>
+              <Link href="/" className="hover:text-gray-500 transition">home</Link>
+              <Link href="/#music" className="hover:text-gray-500 transition">music</Link>
               <Link 
                 href="/blog" 
-                className={currentPage === 'blog' ? 'text-gray-400' : 'hover:text-gray-400 transition'}
+                className={currentPage === 'blog' ? 'text-gray-500' : 'hover:text-gray-500 transition'}
               >
                 blog
               </Link>
               <Link 
                 href="/events" 
-                className={currentPage === 'events' ? 'text-gray-400' : 'hover:text-gray-400 transition'}
+                className={currentPage === 'events' ? 'text-gray-500' : 'hover:text-gray-500 transition'}
               >
                 events
               </Link>
               <Link 
                 href="/contact" 
-                className={currentPage === 'contact' ? 'text-gray-400' : 'hover:text-gray-400 transition'}
+                className={currentPage === 'contact' ? 'text-gray-500' : 'hover:text-gray-500 transition'}
               >
                 contact
               </Link>
@@ -99,35 +99,35 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
               {/* lowercase intentional */}
               <a 
                 href="#home" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 home
               </a>
               <a 
                 href="#music" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 music
               </a>
               <Link 
                 href="/blog" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 blog
               </Link>
               <Link 
                 href="/events" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 events
               </Link>
               <Link 
                 href="/contact" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 contact
@@ -138,35 +138,35 @@ export default function Navigation({ currentPage = 'home' }: NavigationProps) {
               {/* lowercase intentional */}
               <Link 
                 href="/" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 home
               </Link>
               <Link 
                 href="/#music" 
-                className="block hover:text-gray-400 transition"
+                className="block hover:text-gray-500 transition"
                 onClick={closeMenu}
               >
                 music
               </Link>
               <Link 
                 href="/blog" 
-                className={`block ${currentPage === 'blog' ? 'text-gray-400' : 'hover:text-gray-400 transition'}`}
+                className={`block ${currentPage === 'blog' ? 'text-gray-500' : 'hover:text-gray-500 transition'}`}
                 onClick={closeMenu}
               >
                 blog
               </Link>
               <Link 
                 href="/events" 
-                className={`block ${currentPage === 'events' ? 'text-gray-400' : 'hover:text-gray-400 transition'}`}
+                className={`block ${currentPage === 'events' ? 'text-gray-500' : 'hover:text-gray-500 transition'}`}
                 onClick={closeMenu}
               >
                 events
               </Link>
               <Link 
                 href="/contact" 
-                className={`block ${currentPage === 'contact' ? 'text-gray-400' : 'hover:text-gray-400 transition'}`}
+                className={`block ${currentPage === 'contact' ? 'text-gray-500' : 'hover:text-gray-500 transition'}`}
                 onClick={closeMenu}
               >
                 contact

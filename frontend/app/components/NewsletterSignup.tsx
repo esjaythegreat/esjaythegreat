@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+const BROWSER_URL = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
+
 export default function NewsletterSignup() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -13,7 +15,7 @@ export default function NewsletterSignup() {
     setMessage('');
 
     try {
-      const res = await fetch('http://localhost:1337/api/newsletter-subscribers', {
+      const res = await fetch(`${BROWSER_URL}/apii/newsletter-subscribers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,24 +1,37 @@
-.PHONY: help build up down restart logs logs-strapi logs-frontend logs-postgres clean clean-cache clean-all status ps backup restore
+.PHONY: help build up down restart logs logs-caddy logs-strapi logs-frontend logs-postgres logs-all clean clean-cache clean-all status ps backup restore
 
 # Default target
 help:
 	@echo "Available commands:"
+	@echo ""
+	@echo "Service Management:"
 	@echo "  make build          - Build all Docker containers"
 	@echo "  make up             - Start all services"
 	@echo "  make down           - Stop all services"
 	@echo "  make restart        - Restart all services"
-	@echo "  make logs           - View logs from all services"
+	@echo "  make status         - Show service status"
+	@echo "  make ps             - List running containers"
+	@echo ""
+	@echo "Logs (max 10MB per service, 40MB total):"
+	@echo "  make logs           - View logs from all services (real-time)"
+	@echo "  make logs-caddy     - View Caddy logs"
 	@echo "  make logs-strapi    - View Strapi logs"
 	@echo "  make logs-frontend  - View Frontend logs"
 	@echo "  make logs-postgres  - View Postgres logs"
-	@echo "  make clean          - Stop and remove containers (keeps volumes)"
-	@echo "  make clean-cache    - Remove node_modules and build artifacts"
-	@echo "  make clean-all      - Stop and remove everything including volumes"
-	@echo "  make status         - Show service status"
-	@echo "  make ps             - List running containers"
+	@echo "  make logs-all       - View all logs (last 100 lines each)"
+	@echo ""
+	@echo "Shell Access:"
 	@echo "  make shell-strapi   - Open shell in Strapi container"
 	@echo "  make shell-frontend - Open shell in Frontend container"
 	@echo "  make shell-postgres - Open shell in Postgres container"
+	@echo "  make db-console     - Open PostgreSQL console"
+	@echo ""
+	@echo "Cleanup:"
+	@echo "  make clean          - Stop and remove containers (keeps volumes)"
+	@echo "  make clean-cache    - Remove node_modules and build artifacts"
+	@echo "  make clean-all      - Stop and remove everything including volumes"
+	@echo ""
+	@echo "Backup & Restore:"
 	@echo "  make backup         - Backup database and uploaded files"
 	@echo "  make restore        - Restore from latest backup"
 
@@ -42,21 +55,43 @@ down:
 # Restart all services
 restart: down up
 
-# View logs from all services
+# View logs from all services (real-time)
 logs:
 	docker-compose logs -f
 
+# View Caddy logs
+logs-caddy:
+	@echo "Viewing Caddy logs (Ctrl+C to exit)..."
+	docker logs -f esjaythegreat-caddy
+
 # View Strapi logs
 logs-strapi:
-	docker-compose logs -f strapi
+	@echo "Viewing Strapi logs (Ctrl+C to exit)..."
+	docker logs -f esjaythegreat-strapi
 
 # View Frontend logs
 logs-frontend:
-	docker-compose logs -f frontend
+	@echo "Viewing Frontend logs (Ctrl+C to exit)..."
+	docker logs -f esjaythegreat-frontend
 
 # View Postgres logs
 logs-postgres:
-	docker-compose logs -f postgres
+	@echo "Viewing Postgres logs (Ctrl+C to exit)..."
+	docker logs -f esjaythegreat-db
+
+# View all logs (last 100 lines from each service)
+logs-all:
+	@echo "=== Caddy Logs (last 100 lines) ==="
+	@docker logs --tail 100 esjaythegreat-caddy
+	@echo ""
+	@echo "=== Strapi Logs (last 100 lines) ==="
+	@docker logs --tail 100 esjaythegreat-strapi
+	@echo ""
+	@echo "=== Frontend Logs (last 100 lines) ==="
+	@docker logs --tail 100 esjaythegreat-frontend
+	@echo ""
+	@echo "=== Postgres Logs (last 100 lines) ==="
+	@docker logs --tail 100 esjaythegreat-db
 
 # Clean - stop and remove containers (keeps volumes and data)
 clean:
@@ -78,7 +113,7 @@ clean-all:
 	@echo "WARNING: This will delete all data including the database!"
 	@read -p "Are you sure? [y/N] " -n 1 -r; \
 	echo; \
-	if [[ $REPLY =~ ^[Yy]$ ]]; then \
+	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
 		docker-compose down -v; \
 		echo "All containers and volumes removed."; \
 	else \
@@ -107,7 +142,7 @@ shell-postgres:
 
 # View database
 db-console:
-	docker-compose exec postgres psql -U ${POSTGRES_USER:-strapi} -d ${POSTGRES_DB:-strapi}
+	docker-compose exec postgres psql -U $${POSTGRES_USER:-strapi} -d $${POSTGRES_DB:-strapi}
 
 # Backup database and uploaded files
 backup:
@@ -142,4 +177,3 @@ restore:
 	else \
 		echo "Uploads backup not found: backups/uploads_$${TIMESTAMP}.tar.gz"; \
 	fi
-

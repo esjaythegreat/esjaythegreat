@@ -45,11 +45,3 @@ a, button {
 img {
   transition: opacity 0.3s ease-in-out;
 }
-
-img[loading] {
-  opacity: 0;
-}
-
-img.loaded {
-  opacity: 1;
-}

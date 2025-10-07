@@ -1,23 +1,41 @@
-# dev
-development.esjaythegreat.com {
+# Main site
+{$DOMAIN} {
+  {$TLS_CONFIG}
+  
   encode gzip
 
-  # EVERYTHING that belongs to Strapi (REST, admin, and plugins)
+  # EVERYTHING that belongs to Strapi
   @strapi path /api* /_health /admin* /uploads* \
                /content-manager* /content-type-builder* \
-               /users-permissions* /i18n* /email* /upload* /graphql* /webhooks*
+               /users-permissions* /i18n* /email* /upload* \
+               /graphql* /webhooks* /documentation* /marketplace*
 
   handle @strapi {
-    reverse_proxy strapi:1337
+    reverse_proxy strapi:1337 {
+      header_up Host {host}
+      header_up X-Real-IP {remote}
+      header_up X-Forwarded-For {remote}
+      header_up X-Forwarded-Proto {scheme}
+    }
   }
 
   # Next.js for anything else
   handle {
-    reverse_proxy frontend:3000
+    reverse_proxy frontend:3000 {
+      header_up Host {host}
+      header_up X-Real-IP {remote}
+      header_up X-Forwarded-For {remote}
+      header_up X-Forwarded-Proto {scheme}
+    }
   }
 
   log {
-    output file /data/access.log
+    output file /data/access-{$APP_ENV}.log
     format console
   }
+}
+
+# www redirect (will only work when DOMAIN doesn't include www)
+www.{$DOMAIN} {
+  redir https://{$DOMAIN}{uri} permanent
 }

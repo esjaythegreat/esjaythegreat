@@ -13,6 +13,15 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
       - caddy-config:/config
+    environment:
+      DOMAIN: ${DOMAIN}
+      APP_ENV: ${APP_ENV}
+      TLS_CONFIG: ${TLS_CONFIG}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "1"
     networks:
       - esjaythegreat-network
 
@@ -31,6 +40,11 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - esjaythegreat-network
 
@@ -77,6 +91,11 @@ services:
       else
         npm run build && npm run start;
       fi"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - esjaythegreat-network
 
@@ -112,6 +131,11 @@ services:
       else
         npm run build && npm run start;
       fi"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       - esjaythegreat-network
 

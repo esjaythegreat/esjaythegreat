@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import UnsubscribeClient from './unsubscribe-client';
+import UnsubscribeClient from './UnsubscribeClient';
 
 export const dynamic = 'force-dynamic'; // avoids static prerender for this route
 

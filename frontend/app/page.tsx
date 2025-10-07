@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getAlbums } from '@/lib/api';
 import { getStrapiMediaUrl } from '@/lib/utils';
+import type { StrapiAlbum } from '@/lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
 import NewsletterSignup from './components/NewsletterSignup';
@@ -13,7 +14,7 @@ export const metadata: Metadata = genMeta({
 });
 
 export default async function Home() {
-  let albums = [];
+  let albums: StrapiAlbum[] = [];
   const currentYear = new Date().getFullYear();
   
   try {
@@ -76,7 +77,7 @@ export default async function Home() {
           
           {albums && albums.length > 0 ? (
             <div className="grid md:grid-cols-3 gap-8">
-              {albums.map((album: any) => {
+              {albums.map((album) => {
                 const coverImage = album.coverImage;
                 const slug = album.slug || album.id;
                 
@@ -85,9 +86,11 @@ export default async function Home() {
                     <article itemScope itemType="https://schema.org/MusicAlbum">
                       <div className="aspect-square bg-gradient-to-br from-gray-900 to-black border border-gray-700 mb-4 flex items-center justify-center group-hover:border-gray-500 transition-all overflow-hidden">
                         {coverImage?.url ? (
-                          <img 
+                          <Image
                             src={getStrapiMediaUrl(coverImage.url)}
                             alt={`${album.title || 'Album'} cover`}
+                            width={400}
+                            height={400}
                             className="w-full h-full object-cover"
                             itemProp="image"
                           />
@@ -120,7 +123,7 @@ export default async function Home() {
 
       <footer className="py-8 px-6 border-t border-gray-800">
         <div className="max-w-6xl mx-auto text-center text-sm text-gray-500">
-          {/* lowercase intentional - 'esjaythegreat', 'all rights reserved' - do not change */}
+          {/* lowercase intentional - 'all rights reserved' */}
           © {currentYear} esjaythegreat. all rights reserved.
         </div>
       </footer>

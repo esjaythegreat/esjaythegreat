@@ -1,6 +1,8 @@
+import type { StrapiAlbum, StrapiArticle, StrapiEvent } from './types';
+
 const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://strapi:1337/api';
 
-export async function getAlbums() {
+export async function getAlbums(): Promise<StrapiAlbum[]> {
   try {
     const res = await fetch(`${API_URL}/albums?sort=releaseDate:desc&populate=*`, {
       next: { revalidate: 60 } // Revalidate every 60 seconds
@@ -18,7 +20,7 @@ export async function getAlbums() {
   }
 }
 
-export async function getAlbum(slug: string) {
+export async function getAlbum(slug: string): Promise<StrapiAlbum | null> {
   try {
     const res = await fetch(
       `${API_URL}/albums?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`,
@@ -42,7 +44,7 @@ export async function getAlbum(slug: string) {
   }
 }
 
-export async function getArticles() {
+export async function getArticles(): Promise<StrapiArticle[]> {
   try {
     const res = await fetch(`${API_URL}/articles?sort=publishedDate:desc&populate=*`, {
       next: { revalidate: 60 }
@@ -60,7 +62,7 @@ export async function getArticles() {
   }
 }
 
-export async function getArticle(slug: string) {
+export async function getArticle(slug: string): Promise<StrapiArticle | null> {
   try {
     const res = await fetch(
       `${API_URL}/articles?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=*`,
@@ -84,7 +86,7 @@ export async function getArticle(slug: string) {
   }
 }
 
-export async function getEvents() {
+export async function getEvents(): Promise<StrapiEvent[]> {
   try {
     const res = await fetch(`${API_URL}/events?sort=date:desc&populate=*`, {
       next: { revalidate: 60 }

@@ -42,7 +42,8 @@ export default function NewsletterSignup() {
         setStatus('error');
         setMessage('구독에 실패했습니다. 다시 시도해주세요.');
       }
-    } catch (error) {
+    } catch (_error) {
+      // Prefix with underscore to indicate intentionally unused
       setStatus('error');
       setMessage('네트워크 오류가 발생했습니다.');
     }

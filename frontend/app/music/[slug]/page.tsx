@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getAlbum } from '@/lib/api';
 import { getStrapiMediaUrl } from '@/lib/utils';
+import Image from 'next/image';
 import Navigation from '@/app/components/Navigation';
 import { generateMetadata as genMeta, generateMusicAlbumStructuredData, siteConfig } from '@/lib/seo';
 
@@ -58,9 +59,11 @@ export default async function AlbumPage({ params }: { params: Promise<{ slug: st
               <div className="grid md:grid-cols-2 gap-12 mb-12">
                 <div className="aspect-square bg-gradient-to-br from-gray-900 to-black border border-gray-700 overflow-hidden">
                   {coverImage?.url ? (
-                    <img 
+                    <Image
                       src={getStrapiMediaUrl(coverImage.url)}
                       alt={`${album.title} album cover`}
+                      width={600}
+                      height={600}
                       className="w-full h-full object-cover"
                       itemProp="image"
                     />

@@ -109,7 +109,7 @@ export function generateMetadata(options: {
 
 // Schema.org standard types for structured data
 // Reference: https://schema.org/
-export function generateStructuredData(type: 'organization' | 'person', data?: any) {
+export function generateStructuredData(type: 'organization' | 'person', _data?: Record<string, unknown>) {
   const baseData = {
     '@context': 'https://schema.org',
     // MusicGroup is a standard Schema.org type for bands/solo artists

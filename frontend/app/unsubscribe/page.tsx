@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
-const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://strapi:1337/api';
 const BROWSER_URL = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
 
 export default function UnsubscribePage() {
   const searchParams = useSearchParams();
   const [step, setStep] = useState<'confirm' | 'processing' | 'success' | 'error' | 'notfound'>('confirm');
-  const [subscriber, setSubscriber] = useState<any>(null);
+  const [subscriber, setSubscriber] = useState<{ id: number; email: string; isActive: boolean } | null>(null);
   const token = searchParams.get('token');
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function UnsubscribePage() {
   }, [token]);
 
   const handleUnsubscribe = async () => {
+    if (!subscriber) return;
     setStep('processing');
 
     try {
@@ -68,6 +69,7 @@ export default function UnsubscribePage() {
   };
 
   const handleResubscribe = async () => {
+    if (!subscriber) return;
     setStep('processing');
 
     try {
@@ -116,12 +118,12 @@ export default function UnsubscribePage() {
                   >
                     구독 취소
                   </button>
-                  <a
+                  <Link
                     href="/"
                     className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block"
                   >
                     취소
-                  </a>
+                  </Link>
                 </div>
               </>
             ) : (
@@ -139,12 +141,12 @@ export default function UnsubscribePage() {
                   >
                     다시 구독하기
                   </button>
-                  <a
+                  <Link
                     href="/"
                     className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block"
                   >
                     홈으로
-                  </a>
+                  </Link>
                 </div>
               </>
             )}
@@ -163,9 +165,9 @@ export default function UnsubscribePage() {
             <p className="text-gray-400 mb-8">
               언제든 다시 구독하실 수 있습니다.
             </p>
-            <a href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
+            <Link href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
               홈으로 돌아가기
-            </a>
+            </Link>
           </>
         )}
         
@@ -174,9 +176,9 @@ export default function UnsubscribePage() {
             <p className="text-gray-400 mb-8">
               유효하지 않은 링크입니다.
             </p>
-            <a href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
+            <Link href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
               홈으로 돌아가기
-            </a>
+            </Link>
           </>
         )}
         
@@ -185,9 +187,9 @@ export default function UnsubscribePage() {
             <p className="text-red-400 mb-8">
               오류가 발생했습니다. 다시 시도해주세요.
             </p>
-            <a href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
+            <Link href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
               홈으로 돌아가기
-            </a>
+            </Link>
           </>
         )}
       </div>

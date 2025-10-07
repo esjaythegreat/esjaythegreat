@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
 import { getArticles } from '@/lib/api';
 import { formatKoreanDateTime, getStrapiMediaUrl } from '@/lib/utils';
+import type { StrapiArticle } from '@/lib/types';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from '../components/Navigation';
 import { generateMetadata as genMeta } from '@/lib/seo';
 
@@ -11,7 +13,7 @@ export const metadata: Metadata = genMeta({
 });
 
 export default async function BlogPage() {
-  let articles = [];
+  let articles: StrapiArticle[] = [];
   
   try {
     articles = await getArticles();
@@ -30,7 +32,7 @@ export default async function BlogPage() {
 
           {articles && articles.length > 0 ? (
             <div className="space-y-12">
-              {articles.map((article: any) => {
+              {articles.map((article) => {
                 const featuredImage = article.featuredImage;
                 const slug = article.slug || article.id;
                 
@@ -43,9 +45,11 @@ export default async function BlogPage() {
                     >
                       {featuredImage?.url && (
                         <div className="aspect-video md:aspect-square bg-gradient-to-br from-gray-900 to-black border border-gray-700 overflow-hidden group-hover:border-gray-500 transition">
-                          <img 
+                          <Image
                             src={getStrapiMediaUrl(featuredImage.url)}
                             alt={article.title}
+                            width={400}
+                            height={400}
                             className="w-full h-full object-cover"
                             itemProp="image"
                           />

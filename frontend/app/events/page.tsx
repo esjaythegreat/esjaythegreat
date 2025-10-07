@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getEvents } from '@/lib/api';
 import { formatKoreanDateTime } from '@/lib/utils';
+import type { StrapiEvent } from '@/lib/types';
 import Navigation from '../components/Navigation';
 
 export const metadata: Metadata = {
@@ -14,11 +15,11 @@ export const metadata: Metadata = {
 };
 
 export default async function EventsPage() {
-  const events = await getEvents();
+  const events: StrapiEvent[] = await getEvents();
   const now = new Date();
   
-  const upcomingEvents = events.filter((event: any) => new Date(event.date) >= now);
-  const pastEvents = events.filter((event: any) => new Date(event.date) < now);
+  const upcomingEvents = events.filter((event) => new Date(event.date) >= now);
+  const pastEvents = events.filter((event) => new Date(event.date) < now);
 
   return (
     <main className="min-h-screen bg-black text-white">
@@ -37,7 +38,7 @@ export default async function EventsPage() {
                 upcoming events
               </h2>
               <div className="space-y-8">
-                {upcomingEvents.map((event: any) => (
+                {upcomingEvents.map((event) => (
                   <article key={event.id} className="border border-gray-700 hover:border-gray-500 transition-all p-6">
                     <div className="flex flex-col gap-4">
                       <div className="flex-1">
@@ -88,7 +89,7 @@ export default async function EventsPage() {
                 past events
               </h2>
               <div className="space-y-6 opacity-60">
-                {pastEvents.map((event: any) => (
+                {pastEvents.map((event) => (
                   <article key={event.id} className="border border-gray-800 p-6">
                     <div className="flex flex-col gap-4">
                       <div className="flex-1">

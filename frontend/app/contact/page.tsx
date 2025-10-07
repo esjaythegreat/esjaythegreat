@@ -10,7 +10,7 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto">
           {/* lowercase intentional */}
           <h1 className="text-5xl font-light tracking-wider mb-8 text-center">contact</h1>
-          <p className="text-center text-gray-500 mb-16">
+          <p className="text-center text-gray-300 mb-16">
             문의사항이나 협업 제안을 보내주세요
           </p>
           

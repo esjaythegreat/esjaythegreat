@@ -57,7 +57,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
         <article className="pt-24 pb-20 px-6" itemScope itemType="https://schema.org/BlogPosting">
           <div className="max-w-3xl mx-auto">
-            <p className="text-sm text-gray-500 mb-4">
+            <p className="text-sm text-gray-300 mb-4">
               <time itemProp="datePublished" dateTime={article.publishedDate}>
                 {article.publishedDate ? formatKoreanDateTime(article.publishedDate) : ''}
               </time>

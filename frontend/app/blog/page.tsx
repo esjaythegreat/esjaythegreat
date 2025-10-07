@@ -57,16 +57,16 @@ export default async function BlogPage() {
                       )}
                       
                       <div className={featuredImage?.url ? 'md:col-span-2' : 'md:col-span-3'}>
-                        <p className="text-sm text-gray-500 mb-2">
+                        <p className="text-sm text-gray-300 mb-2">
                           <time itemProp="datePublished" dateTime={article.publishedDate}>
                             {article.publishedDate ? formatKoreanDateTime(article.publishedDate) : ''}
                           </time>
                         </p>
-                        <h2 className="text-3xl font-light tracking-wide mb-4 group-hover:text-gray-500 transition" itemProp="headline">
+                        <h2 className="text-3xl font-light tracking-wide mb-4 group-hover:text-gray-300 transition" itemProp="headline">
                           {article.title}
                         </h2>
                         {article.excerpt && (
-                          <p className="text-gray-500 leading-relaxed" itemProp="description">
+                          <p className="text-gray-300 leading-relaxed" itemProp="description">
                             {article.excerpt}
                           </p>
                         )}
@@ -79,7 +79,7 @@ export default async function BlogPage() {
               })}
             </div>
           ) : (
-            <p className="text-center text-gray-500">아직 작성된 글이 없습니다</p>
+            <p className="text-center text-gray-300">아직 작성된 글이 없습니다</p>
           )}
         </div>
       </div>

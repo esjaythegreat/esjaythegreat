@@ -108,7 +108,7 @@ export default function UnsubscribePage() {
                 <p className="text-gray-300 mb-4">
                   {subscriber.email}
                 </p>
-                <p className="text-gray-400 mb-8">
+                <p className="text-gray-300 mb-8">
                   정말 구독을 취소하시겠습니까?
                 </p>
                 <div className="flex gap-4 justify-center">
@@ -131,7 +131,7 @@ export default function UnsubscribePage() {
                 <p className="text-gray-300 mb-4">
                   {subscriber.email}
                 </p>
-                <p className="text-gray-400 mb-8">
+                <p className="text-gray-300 mb-8">
                   현재 구독이 취소된 상태입니다. 다시 구독하시겠습니까?
                 </p>
                 <div className="flex gap-4 justify-center">
@@ -154,7 +154,7 @@ export default function UnsubscribePage() {
         )}
 
         {step === 'processing' && (
-          <p className="text-gray-400">처리 중...</p>
+          <p className="text-gray-300">처리 중...</p>
         )}
         
         {step === 'success' && (
@@ -162,7 +162,7 @@ export default function UnsubscribePage() {
             <p className="text-green-400 mb-4">
               구독이 취소되었습니다.
             </p>
-            <p className="text-gray-400 mb-8">
+            <p className="text-gray-300 mb-8">
               언제든 다시 구독하실 수 있습니다.
             </p>
             <Link href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">
@@ -173,7 +173,7 @@ export default function UnsubscribePage() {
         
         {step === 'notfound' && (
           <>
-            <p className="text-gray-400 mb-8">
+            <p className="text-gray-300 mb-8">
               유효하지 않은 링크입니다.
             </p>
             <Link href="/" className="px-6 py-3 border border-gray-600 hover:bg-white hover:text-black transition-all duration-300 inline-block">

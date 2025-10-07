@@ -15,7 +15,7 @@ export default function NewsletterSignup() {
     setMessage('');
 
     try {
-      const res = await fetch(`${BROWSER_URL}/apii/newsletter-subscribers`, {
+      const res = await fetch(`${BROWSER_URL}/api/newsletter-subscribers`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

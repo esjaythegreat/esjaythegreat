@@ -9,8 +9,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    networks:
-      - esjaythegreat-network
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data

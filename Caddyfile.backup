@@ -21,3 +21,29 @@ development.esjaythegreat.com {
     format console
   }
 }
+
+# prod (on the prod box)
+www.esjaythegreat.com {
+  redir https://esjaythegreat.com{uri} permanent
+}
+esjaythegreat.com {
+  encode gzip
+
+  @strapi path /api* /_health /admin* /uploads* \
+               /content-manager* /content-type-builder* \
+               /users-permissions* /i18n* /email* /upload* /graphql* /webhooks*
+
+  handle @strapi {
+    reverse_proxy strapi:1337
+  }
+
+  handle {
+    reverse_proxy frontend:3000
+  }
+
+  log {
+    output file /data/access.log
+    format console
+  }
+}
+

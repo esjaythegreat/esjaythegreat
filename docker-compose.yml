@@ -52,6 +52,7 @@ services:
       EMAIL_API_KEY: ${EMAIL_API_KEY}
       EMAIL_DEFAULT_FROM: ${EMAIL_DEFAULT_FROM}
       EMAIL_DEFAULT_REPLY_TO: ${EMAIL_DEFAULT_REPLY_TO}
+      STRAPI_ADMIN_BACKEND_URL: ${STRAPI_ADMIN_BACKEND_URL}
     command: >
       sh -c "if [ \"$APP_ENV\" = \"local\" ]; then
         npm run develop;

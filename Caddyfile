@@ -16,6 +16,7 @@
       header_up X-Real-IP {remote}
       header_up X-Forwarded-For {remote}
       header_up X-Forwarded-Proto {scheme}
+      header_up X-Forwarded-Host {host}
       # Optional: also pass CF's client IP header through to Strapi/Next
       header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
     }

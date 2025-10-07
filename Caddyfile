@@ -1,0 +1,61 @@
+{
+  email esjaythegreat@gmail.com
+}
+
+# ===== PRODUCTION =====
+esjaythegreat.com, www.esjaythegreat.com {
+  encode zstd gzip
+
+  log {
+    output file /data/access.log
+    format json
+  }
+
+  # Send Strapi stuff to Strapi (API, uploads, admin, health)
+  @api path /api* /uploads* /admin* /_health
+  handle @api {
+    reverse_proxy esjaythegreat-strapi:1337
+  }
+
+  # Everything else -> Next.js frontend
+  handle {
+    reverse_proxy esjaythegreat-frontend:3000
+  }
+}
+
+# ===== DEVELOPMENT (mini-pc) =====
+development.esjaythegreat.com {
+  encode zstd gzip
+
+  log {
+    output file /data/access.log
+    format json
+  }
+
+  @api path /api* /uploads* /admin* /_health
+  handle @api {
+    reverse_proxy esjaythegreat-strapi:1337
+  }
+
+  handle {
+    reverse_proxy esjaythegreat-frontend:3000
+  }
+}
+
+/*
+# ===== OPTIONAL LOCAL PARITY (commented) =====
+# If you ever want to run Caddy locally too, uncomment and map 8080/8443 in compose.
+http://localhost, http://127.0.0.1 {
+  encode zstd gzip
+
+  @api path /api* /uploads* /admin* /_health
+  handle @api {
+    reverse_proxy esjaythegreat-strapi:1337
+  }
+
+  handle {
+    reverse_proxy esjaythegreat-frontend:3000
+  }
+}
+*/
+

@@ -1,5 +1,5 @@
 export default ({ env }) => ({
-  url: env('STRAPI_ADMIN_BACKEND_URL'),
+  url: env('PUBLIC_URL', undefined),
   proxy: true,
   host: env('HOST', '0.0.0.0'),
   port: env.int('PORT', 1337),

@@ -1,4 +1,23 @@
 services:
+  caddy:
+    image: caddy:2.8
+    container_name: esjaythegreat-caddy
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - strapi
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - esjaythegreat-network
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - esjaythegreat-network
+
   postgres:
     image: postgres:15-alpine
     container_name: esjaythegreat-db
@@ -52,7 +71,7 @@ services:
       EMAIL_API_KEY: ${EMAIL_API_KEY}
       EMAIL_DEFAULT_FROM: ${EMAIL_DEFAULT_FROM}
       EMAIL_DEFAULT_REPLY_TO: ${EMAIL_DEFAULT_REPLY_TO}
-      STRAPI_ADMIN_BACKEND_URL: ${STRAPI_ADMIN_BACKEND_URL}
+      STRAPI_ADMIN_FORCE_INSECURE: ${STRAPI_ADMIN_FORCE_INSECURE:-false}
     command: >
       sh -c "if [ \"$APP_ENV\" = \"local\" ]; then
         npm run develop;
@@ -98,6 +117,8 @@ services:
       - esjaythegreat-network
 
 volumes:
+  caddy-data:
+  caddy-config:
   postgres-data:
     name: esjaythegreat_postgres-data
   strapi-uploads:

@@ -30,6 +30,11 @@ services:
       - ./backend/src:/opt/app/src
       - ./backend/config:/opt/app/config
       - strapi-uploads:/opt/app/public/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"http=require('http');http.get('http://127.0.0.1:1337/_health',r=>process.exit([200,204].includes(r.statusCode)?0:1)).on('error',()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       APP_ENV: ${APP_ENV:-local}
       NODE_ENV: ${NODE_ENV:-development}
@@ -64,7 +69,8 @@ services:
     container_name: esjaythegreat-frontend
     restart: unless-stopped
     depends_on:
-      - strapi
+      strapi:
+        condition: service_healthy   
     ports:
       - "3000:3000"
     volumes:

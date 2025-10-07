@@ -113,32 +113,33 @@ db-console:
 backup:
 	@echo "Creating backup..."
 	@mkdir -p backups
-	@TIMESTAMP=$(date +%Y%m%d_%H%M%S); \
+	@TIMESTAMP=$$(date +%Y%m%d_%H%M%S); \
 	echo "Backing up database..."; \
-	docker-compose exec -T postgres pg_dump -U ${POSTGRES_USER:-strapi} ${POSTGRES_DB:-strapi} > backups/db_$TIMESTAMP.sql; \
+	docker-compose exec -T postgres pg_dump -U $${POSTGRES_USER:-strapi} $${POSTGRES_DB:-strapi} > backups/db_$${TIMESTAMP}.sql; \
 	echo "Backing up uploaded files..."; \
-	docker-compose exec -T strapi tar czf - /opt/app/public/uploads 2>/dev/null > backups/uploads_$TIMESTAMP.tar.gz || true; \
+	docker-compose exec -T strapi tar czf - /opt/app/public/uploads 2>/dev/null > backups/uploads_$${TIMESTAMP}.tar.gz || true; \
 	echo "Backup complete:"; \
-	echo "  - backups/db_$TIMESTAMP.sql"; \
-	echo "  - backups/uploads_$TIMESTAMP.tar.gz"
+	echo "  - backups/db_$${TIMESTAMP}.sql"; \
+	echo "  - backups/uploads_$${TIMESTAMP}.tar.gz"
 
 # Restore from latest backup
 restore:
 	@echo "Available backups:"
-	@ls -lht backups/ | head -10
+	@ls -lht backups/ | head -10 || true
 	@echo ""
 	@read -p "Enter backup timestamp (YYYYMMDD_HHMMSS): " TIMESTAMP; \
-	if [ -f "backups/db_$TIMESTAMP.sql" ]; then \
+	if [ -f "backups/db_$${TIMESTAMP}.sql" ]; then \
 		echo "Restoring database..."; \
-		docker-compose exec -T postgres psql -U ${POSTGRES_USER:-strapi} ${POSTGRES_DB:-strapi} < backups/db_$TIMESTAMP.sql; \
+		docker-compose exec -T postgres psql -U $${POSTGRES_USER:-strapi} -d $${POSTGRES_DB:-strapi} < backups/db_$${TIMESTAMP}.sql; \
 		echo "Database restored."; \
 	else \
-		echo "Database backup not found: backups/db_$TIMESTAMP.sql"; \
+		echo "Database backup not found: backups/db_$${TIMESTAMP}.sql"; \
 	fi; \
-	if [ -f "backups/uploads_$TIMESTAMP.tar.gz" ]; then \
+	if [ -f "backups/uploads_$${TIMESTAMP}.tar.gz" ]; then \
 		echo "Restoring uploaded files..."; \
-		docker-compose exec -T strapi tar xzf - -C / < backups/uploads_$TIMESTAMP.tar.gz; \
+		docker-compose exec -T strapi tar xzf - -C / < backups/uploads_$${TIMESTAMP}.tar.gz; \
 		echo "Files restored."; \
 	else \
-		echo "Uploads backup not found: backups/uploads_$TIMESTAMP.tar.gz"; \
+		echo "Uploads backup not found: backups/uploads_$${TIMESTAMP}.tar.gz"; \
 	fi
+

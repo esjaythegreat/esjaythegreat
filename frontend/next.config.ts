@@ -3,21 +3,29 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'development.esjaythegreat.com',
-        port: '',
-        pathname: '/uploads/**',
-      },
+      // Production
       {
         protocol: 'https',
         hostname: 'esjaythegreat.com',
-        port: '',
         pathname: '/uploads/**',
       },
+      // Development
+      {
+        protocol: 'https',
+        hostname: 'development.esjaythegreat.com',
+        pathname: '/uploads/**',
+      },
+      // Local - Strapi direct access
       {
         protocol: 'http',
         hostname: 'localhost',
+        port: '1337',
+        pathname: '/uploads/**',
+      },
+      // Local - through Docker network
+      {
+        protocol: 'http',
+        hostname: 'strapi',
         port: '1337',
         pathname: '/uploads/**',
       },

@@ -18,12 +18,21 @@ export function formatKoreanDateTime(utcString: string): string {
 }
 
 /**
- * Get Strapi media URL for browser usage
- * Uses NEXT_PUBLIC_STRAPI_BROWSER_URL environment variable
+ * Get Strapi media URL
+ * Automatically uses correct URL based on environment and context (server vs browser)
  */
 export function getStrapiMediaUrl(path?: string): string {
   if (!path) return '';
   
-  const browserUrl = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
-  return `${browserUrl}${path}`;
+  const isServer = typeof window === 'undefined';
+  
+  if (isServer) {
+    // Server-side: Always use Docker service name for internal communication
+    const internalUrl = process.env.NEXT_PUBLIC_STRAPI_API_URL?.replace('/api', '') || 'http://strapi:1337';
+    return `${internalUrl}${path}`;
+  } else {
+    // Client-side: Use the browser-accessible URL
+    const browserUrl = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
+    return `${browserUrl}${path}`;
+  }
 }

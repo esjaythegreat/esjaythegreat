@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+const BROWSER_URL = process.env.NEXT_PUBLIC_STRAPI_BROWSER_URL || 'http://localhost:1337';
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: '',
@@ -18,7 +20,7 @@ export default function ContactForm() {
     setErrorMessage('');
 
     try {
-      const res = await fetch('http://localhost:1337/api/contact-messages', {
+      const res = await fetch(`${BROWSER_URL}/api/contact-messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

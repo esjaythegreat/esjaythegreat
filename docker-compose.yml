@@ -57,6 +57,7 @@ services:
     environment:
       APP_ENV: ${APP_ENV:-local}
       NODE_ENV: ${NODE_ENV:-development}
+      PUBLIC_URL: ${PUBLIC_URL}
       DATABASE_CLIENT: ${DATABASE_CLIENT}
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}

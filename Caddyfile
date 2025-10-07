@@ -1,6 +1,6 @@
 # Main site
 {$DOMAIN} {
-  {$TLS_CONFIG}
+  {$TLS_CONFIG}   # uses env to choose TLS for each env
   
   encode gzip
 
@@ -16,6 +16,8 @@
       header_up X-Real-IP {remote}
       header_up X-Forwarded-For {remote}
       header_up X-Forwarded-Proto {scheme}
+      # Optional: also pass CF's client IP header through to Strapi/Next
+      header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
     }
   }
 
@@ -26,6 +28,7 @@
       header_up X-Real-IP {remote}
       header_up X-Forwarded-For {remote}
       header_up X-Forwarded-Proto {scheme}
+      header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
     }
   }
 
@@ -35,7 +38,8 @@
   }
 }
 
-# www redirect (will only work when DOMAIN doesn't include www)
+# www redirect (add TLS here too so Caddy doesn't try ACME)
 www.{$DOMAIN} {
+  {$TLS_CONFIG}   # ← ADDED (minimal change)
   redir https://{$DOMAIN}{uri} permanent
 }

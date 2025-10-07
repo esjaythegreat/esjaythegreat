@@ -144,39 +144,35 @@ shell-postgres:
 db-console:
 	docker-compose exec postgres psql -U $${POSTGRES_USER:-strapi} -d $${POSTGRES_DB:-strapi}
 
-# Backup database (pg_dump) and uploaded files (tar) into ./backups
+# Backup database (custom format) + uploads
 backup:
 	@set -e; \
 	BKDIR="$$(pwd)/backups"; \
 	mkdir -p "$$BKDIR"; \
 	TS="$$(date +%Y%m%d_%H%M%S)"; \
-	DB_TMP="$$BKDIR/db_$${TS}.sql.tmp"; \
+	DB_TMP="$$BKDIR/db_$${TS}.dump.tmp"; \
 	UP_TMP="$$BKDIR/uploads_$${TS}.tar.gz.tmp"; \
-	echo "Backing up database to $$BKDIR/db_$${TS}.sql ..."; \
-	docker-compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_dump -U "$$POSTGRES_USER" "$$POSTGRES_DB"' > "$$DB_TMP"; \
-	if [ ! -s "$$DB_TMP" ]; then echo "ERROR: pg_dump produced no data"; rm -f "$$DB_TMP"; exit 1; fi; \
+	echo "Backing up database (custom format) to $$BKDIR/db_$${TS}.dump ..."; \
+	docker-compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_dump -Fc -U "$$POSTGRES_USER" "$$POSTGRES_DB"' > "$$DB_TMP"; \
+	test -s "$$DB_TMP"; mv "$$DB_TMP" "$$BKDIR/db_$${TS}.dump"; \
 	echo "Backing up uploads to $$BKDIR/uploads_$${TS}.tar.gz ..."; \
 	docker-compose exec -T strapi sh -c 'cd /opt/app/public 2>/dev/null && tar -czf - uploads 2>/dev/null || tar -czf - --files-from /dev/null' > "$$UP_TMP"; \
-	if [ ! -s "$$UP_TMP" ]; then echo "ERROR: uploads tar produced no data"; rm -f "$$UP_TMP"; exit 1; fi; \
-	mv "$$DB_TMP" "$$BKDIR/db_$${TS}.sql"; \
-	mv "$$UP_TMP" "$$BKDIR/uploads_$${TS}.tar.gz"; \
+	test -s "$$UP_TMP"; mv "$$UP_TMP" "$$BKDIR/uploads_$${TS}.tar.gz"; \
 	echo "Backup complete:"; \
-	echo "  - $$BKDIR/db_$${TS}.sql"; \
+	echo "  - $$BKDIR/db_$${TS}.dump"; \
 	echo "  - $$BKDIR/uploads_$${TS}.tar.gz"
 
-# Restore from timestamped backups (psql + untar)
+# Restore with pg_restore (drops existing objects first)
 restore:
 	@set -e; \
 	BKDIR="$$(pwd)/backups"; \
-	echo "Available backups:"; \
-	ls -lht "$$BKDIR"/ | head -10 || true; \
-	echo ""; \
+	echo "Available backups:"; ls -lht "$$BKDIR"/ | head -10 || true; echo ""; \
 	read -p "Enter backup timestamp (YYYYMMDD_HHMMSS): " TS; \
-	DBFILE="$$BKDIR/db_$${TS}.sql"; \
+	DBFILE="$$BKDIR/db_$${TS}.dump"; \
 	UPFILE="$$BKDIR/uploads_$${TS}.tar.gz"; \
 	if [ -f "$$DBFILE" ]; then \
-		echo "Restoring database from $$DBFILE ..."; \
-		docker-compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" psql -v ON_ERROR_STOP=1 -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < "$$DBFILE"; \
+		echo "Restoring database from $$DBFILE (clean + if-exists) ..."; \
+		docker-compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_restore --clean --if-exists --no-owner --no-privileges -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < "$$DBFILE"; \
 		echo "Database restored."; \
 	else \
 		echo "Database backup not found: $$DBFILE"; exit 1; \

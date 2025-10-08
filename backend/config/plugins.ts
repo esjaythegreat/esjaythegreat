@@ -4,8 +4,8 @@ export default ({ env }) => ({
       provider: 'nodemailer',
       providerOptions: {
         host: 'smtp.resend.com',
-        port: 587,
-        secure: false,
+        port: 2465,
+        secure: true,
         auth: { user: env('EMAIL_PROVIDER'), pass: env('EMAIL_API_KEY') },
       },
       settings: {

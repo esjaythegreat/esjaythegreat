@@ -6,7 +6,7 @@ export default ({ env }) => ({
         host: 'smtp.resend.com',
         port: 587,
         secure: false,
-        auth: { user: 'resend', pass: env('RESEND_API_KEY') },
+        auth: { user: 'resend', pass: env('EMAIL_API_KEY') },
       },
       settings: {
         defaultFrom: env('EMAIL_DEFAULT_FROM'),

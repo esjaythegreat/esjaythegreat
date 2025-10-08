@@ -1,9 +1,12 @@
 export default ({ env }) => ({
   email: {
     config: {
-      provider: 'strapi-provider-email-resend',
+      provider: 'nodemailer',
       providerOptions: {
-        apiKey: env('EMAIL_API_KEY'),
+        host: 'smtp.resend.com',
+        port: 587,
+        secure: false,
+        auth: { user: 'resend', pass: env('RESEND_API_KEY') },
       },
       settings: {
         defaultFrom: env('EMAIL_DEFAULT_FROM'),
@@ -12,3 +15,4 @@ export default ({ env }) => ({
     },
   },
 });
+

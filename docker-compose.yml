@@ -88,6 +88,7 @@ services:
       EMAIL_DEFAULT_FROM: ${EMAIL_DEFAULT_FROM}
       EMAIL_DEFAULT_REPLY_TO: ${EMAIL_DEFAULT_REPLY_TO}
       STRAPI_ADMIN_FORCE_INSECURE: ${STRAPI_ADMIN_FORCE_INSECURE:-false}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
     command: >
       sh -c "if [ \"$APP_ENV\" = \"local\" ]; then
         npm run develop;

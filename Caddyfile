@@ -46,6 +46,6 @@
 
 # www redirect (add TLS here too so Caddy doesn't try ACME)
 www.{$DOMAIN} {
-  {$TLS_CONFIG}   # ← ADDED (minimal change)
+  {$TLS_CONFIG_WWW}
   redir https://{$DOMAIN}{uri} permanent
 }

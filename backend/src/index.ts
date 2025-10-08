@@ -1,20 +1,27 @@
-// import type { Core } from '@strapi/strapi';
-
 export default {
-  /**
-   * An asynchronous register function that runs before
-   * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
-   */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  register({ strapi }: any) {
+    // Make Koa trust X-Forwarded-* (needed behind Cloudflare/Caddy)
+    strapi.server.app.proxy = true;
 
-  /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
-   */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+    // --- TEMP DEBUG: hit /api/_proxydebug to see what Strapi receives ---
+    strapi.server.app.use(async (ctx, next) => {
+      if (ctx.path === '/api/_proxydebug') {
+        ctx.body = {
+          secure: ctx.secure,
+          protocol: ctx.protocol,
+          href: ctx.href,
+          headers: {
+            'x-forwarded-proto': ctx.get('x-forwarded-proto'),
+            'x-forwarded-host': ctx.get('x-forwarded-host'),
+            'x-forwarded-port': ctx.get('x-forwarded-port'),
+            'x-forwarded-ssl': ctx.get('x-forwarded-ssl'),
+          },
+        };
+        return;
+      }
+      await next();
+    });
+    // -------------------------------------------------------------------
+  },
+  bootstrap() {},
 };

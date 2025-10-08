@@ -15,16 +15,14 @@
       header_up Host {host}
       header_up X-Real-IP {remote}
       header_up X-Forwarded-For {remote}
-      header_up X-Forwarded-Proto {scheme}
       header_up X-Forwarded-Host {host}
 
-      # Force HTTPS awareness for Strapi/Koa behind Cloudflare
+      # Force HTTPS awareness behind Cloudflare
       header_up X-Forwarded-Proto https
       header_up X-Forwarded-Port 443
       header_up X-Forwarded-Ssl on
       header_up X-Url-Scheme https
 
-      # Optional: also pass CF's client IP header through to Strapi/Next
       header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
     }
   }

@@ -91,7 +91,7 @@ services:
       sh -c "if [ \"$APP_ENV\" = \"local\" ]; then
         npm run develop;
       else
-        npm run build && npm run start;
+        npm run build && npm prune --omit=dev && npm run start;
       fi"
     logging:
       driver: "json-file"

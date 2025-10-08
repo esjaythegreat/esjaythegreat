@@ -16,6 +16,7 @@ services:
       - ./certs:/certs:ro
     environment:
       DOMAIN: ${DOMAIN}
+      DOMAIN_HOSTS: ${DOMAIN_HOSTS}
       APP_ENV: ${APP_ENV}
       TLS_CONFIG: ${TLS_CONFIG}
     logging:

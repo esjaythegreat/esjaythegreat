@@ -1,39 +1,28 @@
-# Main site
-{$DOMAIN} {
-  {$TLS_CONFIG}   # uses env to choose TLS for each env
-  
+# Single server; which hostnames it serves comes from $DOMAIN_HOSTS
+{$DOMAIN_HOSTS} {
+  {$TLS_CONFIG}
+
   encode gzip
 
-  # EVERYTHING that belongs to Strapi
+  # redirect www → apex only if 'www' is in the host list (i.e., prod)
+  @www host www.{$DOMAIN}
+  redir @www https://{$DOMAIN}{uri} 308
+
+  # Strapi routes
   @strapi path /api* /_health /admin* /uploads* \
                /content-manager* /content-type-builder* \
                /users-permissions* /i18n* /email* /upload* \
                /graphql* /webhooks* /documentation* /marketplace*
-
   handle @strapi {
     reverse_proxy strapi:1337 {
-      header_up Host {host}
-      header_up X-Real-IP {remote}
-      header_up X-Forwarded-For {remote}
-      header_up X-Forwarded-Host {host}
-
-      # Force HTTPS awareness behind Cloudflare
-      header_up X-Forwarded-Proto https
-      header_up X-Forwarded-Port 443
-      header_up X-Forwarded-Ssl on
-      header_up X-Url-Scheme https
-
+      # Caddy already passes X-Forwarded-*; keep only what you truly need:
       header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
     }
   }
 
-  # Next.js for anything else
+  # Next.js
   handle {
     reverse_proxy frontend:3000 {
-      header_up Host {host}
-      header_up X-Real-IP {remote}
-      header_up X-Forwarded-For {remote}
-      header_up X-Forwarded-Proto {scheme}
       header_up CF-Connecting-IP {http.request.header.CF-Connecting-IP}
     }
   }
@@ -42,10 +31,4 @@
     output file /data/access-{$APP_ENV}.log
     format console
   }
-}
-
-# www redirect (add TLS here too so Caddy doesn't try ACME)
-www.{$DOMAIN} {
-  {$TLS_CONFIG_WWW}
-  redir https://{$DOMAIN}{uri} permanent
 }

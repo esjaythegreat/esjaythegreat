@@ -38,18 +38,18 @@ help:
 # Build all containers
 build:
 	@echo "Building Docker containers..."
-	docker-compose build
+	docker compose build
 
 # Start all services
 up:
 	@echo "Starting services..."
-	docker-compose up -d
+	docker compose up -d
 	@echo "Services started! Check status with 'make status'"
 
 # Stop all services
 down:
 	@echo "Stopping services..."
-	docker-compose down
+	docker compose down
 	@echo "Services stopped."
 
 # Restart all services
@@ -57,7 +57,7 @@ restart: down up
 
 # View logs from all services (real-time)
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # View Caddy logs
 logs-caddy:
@@ -96,7 +96,7 @@ logs-all:
 # Clean - stop and remove containers (keeps volumes and data)
 clean:
 	@echo "Stopping and removing containers (keeping volumes)..."
-	docker-compose down
+	docker compose down
 	@echo "Clean complete. Database data is preserved."
 
 # Clean build artifacts and caches
@@ -114,7 +114,7 @@ clean-all:
 	@read -p "Are you sure? [y/N] " -n 1 -r; \
 	echo; \
 	if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
-		docker-compose down -v; \
+		docker compose down -v; \
 		echo "All containers and volumes removed."; \
 	else \
 		echo "Cancelled."; \
@@ -123,26 +123,26 @@ clean-all:
 # Show service status
 status:
 	@echo "Service Status:"
-	@docker-compose ps
+	@docker compose ps
 
 # List running containers (alias for status)
 ps: status
 
 # Open shell in Strapi container
 shell-strapi:
-	docker-compose exec strapi sh
+	docker compose exec strapi sh
 
 # Open shell in Frontend container
 shell-frontend:
-	docker-compose exec frontend sh
+	docker compose exec frontend sh
 
 # Open shell in Postgres container
 shell-postgres:
-	docker-compose exec postgres sh
+	docker compose exec postgres sh
 
 # View database
 db-console:
-	docker-compose exec postgres psql -U $${POSTGRES_USER:-strapi} -d $${POSTGRES_DB:-strapi}
+	docker compose exec postgres psql -U $${POSTGRES_USER:-strapi} -d $${POSTGRES_DB:-strapi}
 
 # Backup database (custom format) + uploads
 backup:
@@ -153,10 +153,10 @@ backup:
 	DB_TMP="$$BKDIR/db_$${TS}.dump.tmp"; \
 	UP_TMP="$$BKDIR/uploads_$${TS}.tar.gz.tmp"; \
 	echo "Backing up database (custom format) to $$BKDIR/db_$${TS}.dump ..."; \
-	docker-compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_dump -Fc -U "$$POSTGRES_USER" "$$POSTGRES_DB"' > "$$DB_TMP"; \
+	docker compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_dump -Fc -U "$$POSTGRES_USER" "$$POSTGRES_DB"' > "$$DB_TMP"; \
 	test -s "$$DB_TMP"; mv "$$DB_TMP" "$$BKDIR/db_$${TS}.dump"; \
 	echo "Backing up uploads to $$BKDIR/uploads_$${TS}.tar.gz ..."; \
-	docker-compose exec -T strapi sh -c 'cd /opt/app/public 2>/dev/null && tar -czf - uploads 2>/dev/null || tar -czf - --files-from /dev/null' > "$$UP_TMP"; \
+	docker compose exec -T strapi sh -c 'cd /opt/app/public 2>/dev/null && tar -czf - uploads 2>/dev/null || tar -czf - --files-from /dev/null' > "$$UP_TMP"; \
 	test -s "$$UP_TMP"; mv "$$UP_TMP" "$$BKDIR/uploads_$${TS}.tar.gz"; \
 	echo "Backup complete:"; \
 	echo "  - $$BKDIR/db_$${TS}.dump"; \
@@ -172,14 +172,14 @@ restore:
 	UPFILE="$$BKDIR/uploads_$${TS}.tar.gz"; \
 	if [ -f "$$DBFILE" ]; then \
 		echo "Restoring database from $$DBFILE (clean + if-exists) ..."; \
-		docker-compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_restore --clean --if-exists --no-owner --no-privileges -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < "$$DBFILE"; \
+		docker compose exec -T postgres sh -c 'PGPASSWORD="$$POSTGRES_PASSWORD" pg_restore --clean --if-exists --no-owner --no-privileges -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' < "$$DBFILE"; \
 		echo "Database restored."; \
 	else \
 		echo "Database backup not found: $$DBFILE"; exit 1; \
 	fi; \
 	if [ -f "$$UPFILE" ]; then \
 		echo "Restoring uploads from $$UPFILE ..."; \
-		docker-compose exec -T strapi sh -c 'mkdir -p /opt/app/public/uploads && tar -xzf - -C /opt/app/public' < "$$UPFILE"; \
+		docker compose exec -T strapi sh -c 'mkdir -p /opt/app/public/uploads && tar -xzf - -C /opt/app/public' < "$$UPFILE"; \
 		echo "Files restored."; \
 	else \
 		echo "Uploads backup not found: $$UPFILE"; \

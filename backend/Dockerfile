@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:24.22.1-alpine
 WORKDIR /opt/app
 RUN apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git postgresql-dev
 COPY package*.json ./

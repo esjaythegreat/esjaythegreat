@@ -33,7 +33,7 @@
     "typescript": "^5"
   },
   "engines": {
-    "node": ">=18.0.0 <=22.x.x",
+    "node": ">=24.22.1",
     "npm": ">=6.0.0"
   },
   "strapi": {

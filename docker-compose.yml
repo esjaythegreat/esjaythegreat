@@ -65,12 +65,12 @@ services:
       - strapi-uploads:/opt/app/public/uploads
     healthcheck:
       test: ["CMD-SHELL", "node -e \"http=require('http');http.get('http://127.0.0.1:1337/_health',r=>process.exit([200,204].includes(r.statusCode)?0:1)).on('error',()=>process.exit(1))\""]
-      interval: 10s
-      timeout: 5s
-      retries: 15
-      start_period: 120s
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 240s
     environment:
-      NODE_OPTIONS: --max-old-space-size=2048
+      NODE_OPTIONS: --max-old-space-size=1280
       APP_ENV: ${APP_ENV:-local}
       NODE_ENV: ${NODE_ENV:-development}
       PUBLIC_URL: ${PUBLIC_URL}

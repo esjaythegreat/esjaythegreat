@@ -70,7 +70,7 @@ services:
       retries: 20
       start_period: 240s
     environment:
-      NODE_OPTIONS: --max-old-space-size=1280
+      # NODE_OPTIONS: --max-old-space-size=1280
       APP_ENV: ${APP_ENV:-local}
       NODE_ENV: ${NODE_ENV:-development}
       PUBLIC_URL: ${PUBLIC_URL}
@@ -94,7 +94,11 @@ services:
       sh -c "if [ \"$APP_ENV\" = \"local\" ]; then
         npm run develop;
       else
-        npm run build && npm prune --omit=dev && npm run start;
+        echo 'Starting Strapi Production Build...';
+        NODE_OPTIONS=--max-old-space-size=3072 npm run build && \
+        npm prune --omit=dev && \
+        echo 'Launching Strapi Server...';
+        NODE_OPTIONS=--max-old-space-size=1024 npm run start;
       fi"
     logging:
       driver: "json-file"
